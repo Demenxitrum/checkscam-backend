@@ -1,0 +1,346 @@
+{
+  "info": {
+    "_postman_id": "a1b2c3d4-checkscam-api-prod",
+    "name": "CheckScam API – Backend Collection",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "checkscam_backend"
+  },
+  "item": [
+    {
+      "name": "AUTH",
+      "item": [
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\": \"user1@gmail.com\",\n    \"name\": \"Nguyen Van A\",\n    \"password\": \"123456\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": "{{base_url}}/auth/register"
+          }
+        },
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// Lưu token sau login",
+                  "var json = pm.response.json();",
+                  "if(json.accessToken){",
+                  "   pm.environment.set(\"user_token\", json.accessToken);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\": \"admin@gmail.com\",\n    \"password\": \"123456\"\n}"
+            },
+            "url": "{{base_url}}/auth/login"
+          }
+        },
+        {
+          "name": "Refresh Token",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": "{{base_url}}/auth/refresh?token={{refresh_token}}"
+          }
+        }
+      ]
+    },
+
+    {
+      "name": "ACCOUNT (ADMIN)",
+      "item": [
+        {
+          "name": "Get All Accounts",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
+            "url": "{{base_url}}/account"
+          }
+        },
+        {
+          "name": "Lock Account",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}"
+              }
+            ],
+            "url": "{{base_url}}/account/2/lock"
+          }
+        },
+        {
+          "name": "Unlock Account",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}"
+              }
+            ],
+            "url": "{{base_url}}/account/2/unlock"
+          }
+        },
+        {
+          "name": "Assign Role to CTV",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}"
+              }
+            ],
+            "url": "{{base_url}}/account/2/role?role=CTV"
+          }
+        }
+      ]
+    },
+
+    {
+      "name": "REPORT",
+      "item": [
+        {
+          "name": "Create Report",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{user_token}}"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "infoValue", "value": "0912345678" },
+                { "key": "type", "value": "PHONE" },
+                { "key": "description", "value": "Lừa đảo mạo danh ngân hàng" },
+                {
+                  "key": "files",
+                  "type": "file",
+                  "src": ""
+                }
+              ]
+            },
+            "url": "{{base_url}}/report"
+          }
+        },
+
+        {
+          "name": "Get Report List",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{ctv_token}}" }
+            ],
+            "url": "{{base_url}}/report?page=0&size=10"
+          }
+        },
+        {
+          "name": "Report Detail",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{ctv_token}}" }
+            ],
+            "url": "{{base_url}}/report/1"
+          }
+        },
+        {
+          "name": "Approve Report",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{ctv_token}}" }
+            ],
+            "url": "{{base_url}}/report/1/approve"
+          }
+        },
+        {
+          "name": "Reject Report",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{ctv_token}}" }
+            ],
+            "url": "{{base_url}}/report/1/reject"
+          }
+        },
+        {
+          "name": "Delete Report (Admin)",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{admin_token}}" }
+            ],
+            "url": "{{base_url}}/report/1"
+          }
+        }
+      ]
+    },
+
+    {
+      "name": "LOOKUP",
+      "item": [
+        {
+          "name": "Lookup Phone",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/lookup/phone?value=0912345678"
+          }
+        },
+        {
+          "name": "Lookup Bank",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/lookup/bank?value=123456789012"
+          }
+        },
+        {
+          "name": "Lookup URL",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/lookup/url?value=https://abc.com"
+          }
+        }
+      ]
+    },
+
+    {
+      "name": "NEWS",
+      "item": [
+        {
+          "name": "Get News List",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/news?page=0&size=5"
+          }
+        },
+        {
+          "name": "News Detail",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/news/1"
+          }
+        },
+        {
+          "name": "Create News",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{ctv_token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n \"title\": \"Tin thử nghiệm\",\n \"description\": \"Mô tả\",\n \"content\": \"Nội dung...\",\n \"thumbnailUrl\": \"/uploads/x.png\",\n \"categoryId\": 1\n}"
+            },
+            "url": "{{base_url}}/news"
+          }
+        }
+      ]
+    },
+
+    {
+      "name": "AI CHAT",
+      "item": [
+        {
+          "name": "Chat AI",
+          "request": {
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"message\": \"Số 0912345678 có lừa đảo không?\" }"
+            },
+            "url": "{{base_url}}/ai/chat"
+          }
+        }
+      ]
+    },
+
+    {
+      "name": "DASHBOARD",
+      "item": [
+        {
+          "name": "Summary",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{ctv_token}}" }
+            ],
+            "url": "{{base_url}}/dashboard/summary"
+          }
+        },
+        {
+          "name": "Daily",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{ctv_token}}" }
+            ],
+            "url": "{{base_url}}/dashboard/daily"
+          }
+        }
+      ]
+    },
+
+    {
+      "name": "UPLOAD",
+      "item": [
+        {
+          "name": "Upload Single File",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "files", "type": "file", "src": "" }
+              ]
+            },
+            "url": "{{base_url}}/upload/file"
+          }
+        },
+        {
+          "name": "Upload Multiple Files",
+          "request": {
+            "method": "POST",
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "files", "type": "file", "src": "" },
+                { "key": "files", "type": "file", "src": "" }
+              ]
+            },
+            "url": "{{base_url}}/upload/multiple"
+          }
+        }
+      ]
+    }
+  ]
+}
