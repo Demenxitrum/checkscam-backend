@@ -1,53 +1,56 @@
-# =====================
-# Java / Spring Boot
-# =====================
+HELP.md
 target/
-*.log
-*.class
+.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
 
-# =====================
-# Maven
-# =====================
-.mvn/wrapper/maven-wrapper.properties
-
-# =====================
-# IDE
-# =====================
-.idea/
-.vscode/
-*.iml
+### STS ###
+.apt_generated
 .classpath
+.factorypath
 .project
-.settings/
-.sts4-cache/
+.settings
+.springBeans
+.sts4-cache
 
-# =====================
-# NetBeans
-# =====================
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+### NetBeans ###
 /nbproject/private/
 /nbbuild/
 /dist/
 /nbdist/
 /.nb-gradle/
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
 
+### VS Code ###
+.vscode/
 # =====================
-# OS
+# CHECKSCAM SPECIFIC
 # =====================
-.DS_Store
-Thumbs.db
 
-# =====================
-# Python (ETL / Risk Engine)
-# =====================
+# Uploaded files (runtime)
+uploads/
+storage/
+
+# ETL virtual env
+etl_env/
+
+# Python cache
 __pycache__/
 *.pyc
 *.pyo
-.env
-venv/
-.venv/
 
-# =====================
-# Data (không public)
-# =====================
-storage/raw/
-storage/clean/
+# Logs
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
