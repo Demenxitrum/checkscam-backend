@@ -1,0 +1,53 @@
+# =====================
+# Java / Spring Boot
+# =====================
+target/
+*.log
+*.class
+
+# =====================
+# Maven
+# =====================
+.mvn/wrapper/maven-wrapper.properties
+
+# =====================
+# IDE
+# =====================
+.idea/
+.vscode/
+*.iml
+.classpath
+.project
+.settings/
+.sts4-cache/
+
+# =====================
+# NetBeans
+# =====================
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+# =====================
+# OS
+# =====================
+.DS_Store
+Thumbs.db
+
+# =====================
+# Python (ETL / Risk Engine)
+# =====================
+__pycache__/
+*.pyc
+*.pyo
+.env
+venv/
+.venv/
+
+# =====================
+# Data (không public)
+# =====================
+storage/raw/
+storage/clean/
