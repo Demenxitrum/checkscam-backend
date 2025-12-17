@@ -39,8 +39,48 @@ public class AdminLookupService {
         Optional<LookupCache> cacheOpt = lookupCacheRepository.findByValueAndType_Name(entityValue, entityType);
 
         if (cacheOpt.isEmpty()) {
-            return null;
+
+            AdminLookupResponse empty = new AdminLookupResponse();
+
+            empty.setEntityType(entityType);
+            empty.setEntityValue(entityValue);
+            empty.setNormalizedValue(entityValue);
+
+        // ---------- Kết quả đánh giá ----------
+            empty.setRiskScore(0);
+            empty.setRiskLevel("UNKNOWN");
+            empty.setConfidence(0.0);
+
+        // ---------- Dữ liệu cộng đồng ----------
+            empty.setReportCount(0);
+            empty.setApprovedReports(0);
+            empty.setPendingReports(0);
+            empty.setRejectedReports(0);
+
+        // ---------- Thời gian ----------
+            empty.setFirstReportedAt(null);
+            empty.setLastReportedAt(null);
+
+        // ---------- Risk Engine ----------
+            empty.setRiskSignals(Collections.emptyList());
+            empty.setSignalWeights(Collections.emptyMap());
+
+        // ---------- Source summary ----------
+        Map<String, Boolean> sourceSummary = new LinkedHashMap<>();
+            sourceSummary.put("community", false);
+            sourceSummary.put("government", false);
+            sourceSummary.put("news", false);
+            sourceSummary.put("externalBlacklist", false);
+            empty.setSourceSummary(sourceSummary);
+
+        // ---------- Admin hints ----------
+            empty.setAdminHints(
+            List.of("Chưa có dữ liệu trong hệ thống")
+        );
+            empty.setLastUpdated(null);
+            return empty;
         }
+
 
         LookupCache cache = cacheOpt.get();
 
